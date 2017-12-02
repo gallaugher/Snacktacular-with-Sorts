@@ -17,6 +17,10 @@ class PlaceData: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var placeDocumentID: String
     
+    var location: CLLocation {
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
+    
     var title: String? {
         return placeName
     }

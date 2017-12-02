@@ -15,11 +15,13 @@ import FirebaseGoogleAuthUI
 class PlaceListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var sortSegmentedControl: UISegmentedControl!
     var places = [PlaceData]()
     var authUI: FUIAuth!
     var db: Firestore!
     var storage: Storage!
     var newImages = [UIImage]()
+    let userLocation = CLLocation(latitude: 42.334709, longitude: -71.170061)
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -190,7 +192,26 @@ class PlaceListViewController: UIViewController {
             print("Couldn't sign out")
         }
     }
+    
+    @IBAction func sortSegmentPressed(_ sender: UISegmentedControl) {
+        switch sortSegmentedControl.selectedSegmentIndex {
+        case 0: // unsorted
+            loadData()
+        case 1: // A-Z
+            let sortedArray = places.sorted(by: {$0.placeName < $1.placeName})
+            places = sortedArray
+            tableView.reloadData()
+        case 2: // Distance (Closest to Farthest)
+            let sortedPlaces = places.sorted (by: {$0.location.distance(from: userLocation) < $1.location.distance(from: userLocation)})
+            places = sortedPlaces
+            _ = places.map {print($0.placeName, $0.latitude, $0.longitude)}
+            tableView.reloadData()
+        default:
+            print("ERROR: You should never have gotten here!")
+        }
+    }
  }
+ 
 
 extension PlaceListViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -199,10 +220,11 @@ extension PlaceListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = places[indexPath.row].placeName
-        //cell.detailTextLabel?.text = places[indexPath.row].address
-        cell.detailTextLabel?.text = places[indexPath.row].postingUserID
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! PlaceTableViewCell
+        cell.placeNameLabel?.text = places[indexPath.row].placeName
+        let distanceInMeters = places[indexPath.row].location.distance(from: userLocation)
+        let distanceInMiles = "Distance: "+String(format: "%.2f", (distanceInMeters * 0.00062137))+" miles"
+        cell.distanceLabel.text = distanceInMiles
         return cell
     }
 }

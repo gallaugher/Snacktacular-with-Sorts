@@ -17,7 +17,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var placeNameField: UITextField!
     @IBOutlet weak var addressField: UITextField!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var imageToPost: UIImageView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var placeData: PlaceData?
     var locationManger: CLLocationManager!
@@ -25,6 +25,7 @@ class DetailViewController: UIViewController {
     var regionRadius = 1000.0 // 1 km
     var imagePicker = UIImagePickerController()
     var newImages = [UIImage]()
+    var placeImages = [UIImage]()
     var db: Firestore!
     var storage: Storage!
     
@@ -35,6 +36,8 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         imagePicker.delegate = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         db = Firestore.firestore()
         storage = Storage.storage()
@@ -91,7 +94,8 @@ class DetailViewController: UIViewController {
                         return
                     }
                     let image = UIImage(data: data!)
-                    self.imageToPost.image = image
+                    self.placeImages.append(image!)
+                    self.collectionView.reloadData()
                 }
             }
         }
@@ -103,8 +107,13 @@ class DetailViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        placeData?.placeName = placeNameField.text!
-        placeData?.address = addressField.text!
+        if segue.identifier == "ShowPhoto" {
+            let destination = segue.destination as! PhotoViewController
+            destination.photoImage = placeImages[collectionView.indexPathsForSelectedItems!.first!.row]
+        } else {
+            placeData?.placeName = placeNameField.text!
+            placeData?.address = addressField.text!
+        }
     }
     
     func showAlert(title: String, message: String) {
@@ -267,9 +276,9 @@ extension DetailViewController: UINavigationControllerDelegate, UIImagePickerCon
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let selectedImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        imageToPost.image = selectedImage
+        placeImages.insert(selectedImage, at: 0)
         newImages.append(selectedImage)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: {self.collectionView.reloadData()})
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -288,5 +297,17 @@ extension DetailViewController: UINavigationControllerDelegate, UIImagePickerCon
         } else {
             showAlert(title: "Camera Not Available", message: "There is no camera available on this device.")
         }
+    }
+}
+
+extension DetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return placeImages.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PlaceImageCollectionViewCell
+        cell.placeImage.image = placeImages[indexPath.row]
+        return cell
     }
 }

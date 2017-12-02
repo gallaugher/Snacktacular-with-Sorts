@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3C2B696D90291EFE254E4399 /* Pods_Snacktacular.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12BDA8CA1D97D8A68088E065 /* Pods_Snacktacular.framework */; };
 		3E5F569C1FC8F0690004CA4F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E5F569B1FC8F0690004CA4F /* GoogleService-Info.plist */; };
+		3E6897FD1FD209B300541B68 /* PlaceImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6897FC1FD209B300541B68 /* PlaceImageCollectionViewCell.swift */; };
+		3E6897FF1FD20DEB00541B68 /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6897FE1FD20DEB00541B68 /* PhotoViewController.swift */; };
 		3E795C551FC88D7500258D81 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E795C541FC88D7500258D81 /* AppDelegate.swift */; };
 		3E795C5A1FC88D7500258D81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E795C581FC88D7500258D81 /* Main.storyboard */; };
 		3E795C5C1FC88D7500258D81 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E795C5B1FC88D7500258D81 /* Assets.xcassets */; };
@@ -17,12 +19,15 @@
 		3E795C691FC88E9800258D81 /* PlaceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E795C681FC88E9800258D81 /* PlaceListViewController.swift */; };
 		3E795C6B1FC8933700258D81 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E795C6A1FC8933700258D81 /* DetailViewController.swift */; };
 		3E795C6F1FC89E6000258D81 /* UINavigationController+preferredStatusBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E795C6E1FC89E6000258D81 /* UINavigationController+preferredStatusBarStyle.swift */; };
+		3E99B9081FD2340400B60709 /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E99B9071FD2340400B60709 /* PlaceTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		12BDA8CA1D97D8A68088E065 /* Pods_Snacktacular.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Snacktacular.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B23663D52B76923B39C2794 /* Pods-Snacktacular.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snacktacular.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Snacktacular/Pods-Snacktacular.debug.xcconfig"; sourceTree = "<group>"; };
 		3E5F569B1FC8F0690004CA4F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		3E6897FC1FD209B300541B68 /* PlaceImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		3E6897FE1FD20DEB00541B68 /* PhotoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		3E795C511FC88D7500258D81 /* Snacktacular.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snacktacular.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E795C541FC88D7500258D81 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E795C591FC88D7500258D81 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -33,6 +38,7 @@
 		3E795C681FC88E9800258D81 /* PlaceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListViewController.swift; sourceTree = "<group>"; };
 		3E795C6A1FC8933700258D81 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		3E795C6E1FC89E6000258D81 /* UINavigationController+preferredStatusBarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+preferredStatusBarStyle.swift"; sourceTree = "<group>"; };
+		3E99B9071FD2340400B60709 /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		E16D9590DA45D596D5A66145 /* Pods-Snacktacular.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Snacktacular.release.xcconfig"; path = "Pods/Target Support Files/Pods-Snacktacular/Pods-Snacktacular.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,7 +79,10 @@
 				3E795C661FC88D9B00258D81 /* PlaceData.swift */,
 				3E795C6E1FC89E6000258D81 /* UINavigationController+preferredStatusBarStyle.swift */,
 				3E795C681FC88E9800258D81 /* PlaceListViewController.swift */,
+				3E99B9071FD2340400B60709 /* PlaceTableViewCell.swift */,
 				3E795C6A1FC8933700258D81 /* DetailViewController.swift */,
+				3E6897FC1FD209B300541B68 /* PlaceImageCollectionViewCell.swift */,
+				3E6897FE1FD20DEB00541B68 /* PhotoViewController.swift */,
 				3E795C581FC88D7500258D81 /* Main.storyboard */,
 				3E795C5B1FC88D7500258D81 /* Assets.xcassets */,
 				3E795C5D1FC88D7500258D81 /* LaunchScreen.storyboard */,
@@ -260,7 +269,10 @@
 			files = (
 				3E795C691FC88E9800258D81 /* PlaceListViewController.swift in Sources */,
 				3E795C551FC88D7500258D81 /* AppDelegate.swift in Sources */,
+				3E6897FD1FD209B300541B68 /* PlaceImageCollectionViewCell.swift in Sources */,
+				3E99B9081FD2340400B60709 /* PlaceTableViewCell.swift in Sources */,
 				3E795C671FC88D9B00258D81 /* PlaceData.swift in Sources */,
+				3E6897FF1FD20DEB00541B68 /* PhotoViewController.swift in Sources */,
 				3E795C6F1FC89E6000258D81 /* UINavigationController+preferredStatusBarStyle.swift in Sources */,
 				3E795C6B1FC8933700258D81 /* DetailViewController.swift in Sources */,
 			);
