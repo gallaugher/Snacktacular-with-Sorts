@@ -82,6 +82,9 @@ class PlaceListViewController: UIViewController {
                 placeData.placeDocumentID = document.documentID
                 self.places.append(placeData)
             }
+            if self.sortSegmentedControl.selectedSegmentIndex != 0 {
+                self.sortBasedOnSegmentPressed()
+            }
             self.tableView.reloadData()
         }
     }
@@ -105,7 +108,7 @@ class PlaceListViewController: UIViewController {
                     print("ERROR: updating document \(error.localizedDescription)")
                 } else {
                     print("Document updated with reference ID \(ref.documentID)")
-                    self.sortBasedOnSegmentPressed() // includes call to tableView.reloadData()
+                    self.sortBasedOnSegmentPressed()
                     self.saveImages(placeDocumentID: placeData.placeDocumentID)
                 }
             }
