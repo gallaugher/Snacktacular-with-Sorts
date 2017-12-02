@@ -86,26 +86,27 @@ class PlaceListViewController: UIViewController {
         }
     }
     
-    func saveData(index: Int) {
+    func saveData(placeData: PlaceData) {
         // Grab the unique userID
         if let postingUserID = (authUI.auth?.currentUser?.email) {
-            places[index].postingUserID = postingUserID
+            placeData.postingUserID = postingUserID
         } else {
-            places[index].postingUserID = "unknown user"
+            placeData.postingUserID = "unknown user"
         }
         
         // Create the dictionary representing data we want to save
-        let dataToSave: [String: Any] = places[index].dictionary
+        let dataToSave: [String: Any] = placeData.dictionary
         
         // if we HAVE saved a record, we'll have an ID
-        if places[index].placeDocumentID != "" {
-            let ref = db.collection("places").document(places[index].placeDocumentID)
+        if placeData.placeDocumentID != "" {
+            let ref = db.collection("places").document(placeData.placeDocumentID)
             ref.setData(dataToSave) { (error) in
                 if let error = error {
                     print("ERROR: updating document \(error.localizedDescription)")
                 } else {
                     print("Document updated with reference ID \(ref.documentID)")
-                    self.saveImages(placeDocumentID: self.places[index].placeDocumentID)
+                    self.sortBasedOnSegmentPressed() // includes call to tableView.reloadData()
+                    self.saveImages(placeDocumentID: placeData.placeDocumentID)
                 }
             }
         } else { // Otherwise we don't have a document ID so we need to create the ref ID and save a new document
@@ -115,8 +116,9 @@ class PlaceListViewController: UIViewController {
                     print("ERROR: adding document \(error.localizedDescription)")
                 } else {
                     print("Document added with reference ID \(ref!.documentID)")
-                    self.places[index].placeDocumentID = "\(ref!.documentID)"
-                    self.saveImages(placeDocumentID: self.places[index].placeDocumentID)
+                    placeData.placeDocumentID = "\(ref!.documentID)"
+                    self.sortBasedOnSegmentPressed() // includes call to tableView.reloadData()
+                    self.saveImages(placeDocumentID: placeData.placeDocumentID)
                 }
             }
         }
@@ -167,33 +169,7 @@ class PlaceListViewController: UIViewController {
         }
     }
     
-    @IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
-        let source = segue.source as! DetailViewController
-        newImages = source.newImages
-        if let selectedIndexPath = tableView.indexPathForSelectedRow {
-            places[selectedIndexPath.row] = (source.placeData)!
-            tableView.reloadRows(at: [selectedIndexPath], with: .automatic)
-            saveData(index: selectedIndexPath.row)
-        } else {
-            let newIndexPath = IndexPath(row: places.count, section: 0)
-            places.append((source.placeData)!)
-            tableView.insertRows(at: [newIndexPath], with: .bottom)
-            tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
-            saveData(index: newIndexPath.row)
-        }
-    }
-    
-    @IBAction func signOutButtonPressed(_ sender: UIBarButtonItem) {
-        do {
-            try authUI!.signOut()
-            print("^^^ Successfully signed out!")
-            signIn()
-        } catch {
-            print("Couldn't sign out")
-        }
-    }
-    
-    @IBAction func sortSegmentPressed(_ sender: UISegmentedControl) {
+    func sortBasedOnSegmentPressed() {
         switch sortSegmentedControl.selectedSegmentIndex {
         case 0: // unsorted
             loadData()
@@ -209,6 +185,34 @@ class PlaceListViewController: UIViewController {
         default:
             print("ERROR: You should never have gotten here!")
         }
+    }
+    
+    @IBAction func unwindFromDetail(segue: UIStoryboardSegue) {
+        let source = segue.source as! DetailViewController
+        newImages = source.newImages
+        if tableView.indexPathForSelectedRow != nil {
+            let indexOfMatch = places.index(where: {$0.placeDocumentID == source.placeData?.placeDocumentID})!
+            places[indexOfMatch] = (source.placeData)!
+            saveData(placeData: places[indexOfMatch])
+        } else {
+            let newIndexPath = IndexPath(row: places.count, section: 0)
+            places.append((source.placeData)!)
+            saveData(placeData: (source.placeData)!)
+        }
+    }
+    
+    @IBAction func signOutButtonPressed(_ sender: UIBarButtonItem) {
+        do {
+            try authUI!.signOut()
+            print("^^^ Successfully signed out!")
+            signIn()
+        } catch {
+            print("Couldn't sign out")
+        }
+    }
+    
+    @IBAction func sortSegmentPressed(_ sender: UISegmentedControl) {
+        sortBasedOnSegmentPressed()
     }
  }
  
